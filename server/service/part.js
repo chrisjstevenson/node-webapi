@@ -43,19 +43,15 @@ function Single(req, res, next){
         res.send(500, 'id is required');
     }
 
-    //Convert the string to an ObjectId.
-    //http://stackoverflow.com/questions/10929443/nodejs-mongodb-getting-data-from-collection-with-findone
-    var obj_id = BSON.ObjectID.createFromHexString(req.params.id);
-
-    dbParts().findOne({ _id: obj_id }, function (e, result) {
+    dbParts().findById(req.params.id, function(e, result) {
         if (e) return next(e);
-        if(result){
+        if (result){
             res.send(result);
         }
         else{
-            res.send(404, "Part not found. id: " + req.params.id);
+            res.send(404, "Part not found.  id: " + req.params.id);
         }
-    });
+     });
 }
 
 function dbParts() {
