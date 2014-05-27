@@ -4,6 +4,7 @@ var expect = require('expect.js');
 describe('scorpion rest api server', function() {
 
     var baseUrl = 'http://localhost:3000';
+    var id;
 
     it('posts a part', function(done) {
 
@@ -45,9 +46,34 @@ describe('scorpion rest api server', function() {
                expect(e).to.eql(null);
                expect(res.body.length).to.eql(1);
                expect(res.body[0]._id.length).to.eql(24); //mongo key length is 24
+               id = res.body[0]._id;
                done();
            })
 
+    });
+
+
+    it('Retrieves a part', function(done) {
+        superagent.get(baseUrl + '/part/' + id)
+            .end(function(error, res) {
+                expect(error).to.eql(null);
+                expect(typeof res.body).to.eql('object');
+                expect(res.body._id.length).to.eql('24');
+                expect(res.body._id).to.eql(id);
+                done();
+            });
+    });
+
+
+    it('Updates a part', function(done) {
+        superagent.put(baseUrl + '/part/' + id)
+            .send({"manufacturer": "UpdatedManufacturer"
+            })
+           .end(function(error, res) {
+              expect(error).to.eql(null);
+              expect(res.body.msg).to.eql('success');
+              done();
+           });
     });
 
 
@@ -59,9 +85,5 @@ describe('scorpion rest api server', function() {
                 done();
             });
     });
-
-
-
-
 
 })
