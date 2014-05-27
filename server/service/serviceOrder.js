@@ -1,5 +1,4 @@
 var db = require('../data/scorpionMongo').db;
-var BSON = require('mongoskin').BSONPure;
 
 function Add(req, res, next) {
 
@@ -8,7 +7,7 @@ function Add(req, res, next) {
         return;
     }
 
-    dbParts().insert(req.body, function (e, result) {
+    dbServiceOrders().insert(req.body, function (e, result) {
         if (e) return next(e);
         res.send(result);
     });
@@ -20,17 +19,16 @@ function Update(req, res, next) {
         res.send(500, 'id is required');
     }
 
-    dbParts().updateById(req.params.id, {$set:req.body}, {safe:true, multi:false}, function (e, result) {
+    dbServiceOrders().updateById(req.params.id, {$set:req.body}, {safe:true, multi:false}, function (e, result) {
         if (e) return next(e);
         res.send((result === 1) ? {msg: 'success'} : {msg: 'error'});
     });
 }
 
 function All(req, res, next) {
-    // Clean query? who knows
     var query = req.query || {};
 
-    dbParts().find(query, {limit: 10}).toArray(function (e, results) {
+    dbServiceOrders().find(query, {limit: 10}).toArray(function (e, results) {
         if (e) return next(e);
         res.send(results)
     });
@@ -38,24 +36,24 @@ function All(req, res, next) {
 
 function Single(req, res, next){
 
-
     if(!req.params.id){
         res.send(500, 'id is required');
     }
 
-    dbParts().findById(req.params.id, function(e, result) {
+    dbServiceOrders().findById(req.params.id, function(e, result) {
         if (e) return next(e);
         if (result){
             res.send(result);
         }
         else{
-            res.send(404, "Part not found.  id: " + req.params.id);
+            res.send(404, "Service Order not found.  id: " + req.params.id);
         }
-     });
+    });
 }
 
-function dbParts() {
-    return db.collection('parts');
+
+function dbServiceOrders() {
+    return db.collection('serviceOrders');
 }
 
 module.exports = {

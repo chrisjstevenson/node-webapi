@@ -1,16 +1,16 @@
 var superagent = require('superagent');
 var expect = require('expect.js');
 
-describe('scorpion rest api server', function() {
+describe('Scorpion Service Order API should', function() {
 
     var baseUrl = 'http://localhost:3000';
     var id;
 
-    it('posts a part', function(done) {
+    it('create a Service Order', function(done) {
 
-       superagent.post(baseUrl + '/part')
+       superagent.post(baseUrl + '/service-order')
            .send({
-               "serviceOrder": 308053941,
+               "serviceOrderId": 308053941,
                "serialNumber": "bfb2ad63-8957-4e52-bdc4-147b863e945e",
                "classification": [
                    "velit",
@@ -40,12 +40,9 @@ describe('scorpion rest api server', function() {
                "sortTo": "GS"
            })
            .end(function(e, res) {
-
-               //console.log(res.error);
-
                expect(e).to.eql(null);
                expect(res.body.length).to.eql(1);
-               expect(res.body[0]._id.length).to.eql(24); //mongo key length is 24
+               expect(res.body[0]._id.length).to.eql(24); //check for mongo key, length is 24
                id = res.body[0]._id;
                done();
            })
@@ -53,20 +50,19 @@ describe('scorpion rest api server', function() {
     });
 
 
-    it('Retrieves a part', function(done) {
-        superagent.get(baseUrl + '/part/' + id)
+    it('retrieve a Service Order', function(done) {
+        superagent.get(baseUrl + '/service-order/' + id)
             .end(function(error, res) {
                 expect(error).to.eql(null);
                 expect(typeof res.body).to.eql('object');
-                expect(res.body._id.length).to.eql('24');
                 expect(res.body._id).to.eql(id);
                 done();
             });
     });
 
 
-    it('Updates a part', function(done) {
-        superagent.put(baseUrl + '/part/' + id)
+    it('update a Service Order', function(done) {
+        superagent.put(baseUrl + '/service-order/' + id)
             .send({"manufacturer": "UpdatedManufacturer"
             })
            .end(function(error, res) {
@@ -77,8 +73,8 @@ describe('scorpion rest api server', function() {
     });
 
 
-    it('gets all parts', function(done) {
-        superagent.get(baseUrl + '/part')
+    it('get all Service Orders', function(done) {
+        superagent.get(baseUrl + '/service-orders')
             .end(function(error, res) {
                 expect(error).to.eql(null);
                 expect(res.body.length).to.be.above(0);
