@@ -5,6 +5,7 @@ describe('Scorpion Service Order API should', function() {
 
     var baseUrl = 'http://localhost:3000';
     var id;
+    var serviceOrderId;
 
     it('create a Service Order', function(done) {
 
@@ -44,6 +45,7 @@ describe('Scorpion Service Order API should', function() {
                expect(res.body.length).to.eql(1);
                expect(res.body[0]._id.length).to.eql(24); //check for mongo key, length is 24
                id = res.body[0]._id;
+               serviceOrderId = res.body[0].serviceOrderId;
                done();
            })
 
@@ -81,5 +83,19 @@ describe('Scorpion Service Order API should', function() {
                 done();
             });
     });
+
+    it('get Service Order by serviceOrderId', function(done) {
+        superagent.get(baseUrl + '/service-order-byid/' + serviceOrderId)
+            .end(function(error, res) {
+
+                console.log(res);
+
+                expect(error).to.eql(null);
+                expect(typeof res.body).to.eql('object');
+                expect(res.body[0].serviceOrderId).to.eql(serviceOrderId);
+                expect(res.body[0]._id).to.eql(id);
+            })
+    })
+
 
 })

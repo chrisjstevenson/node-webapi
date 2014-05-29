@@ -24,8 +24,13 @@ exports.init = function (app) {
        serviceOrder.single(req, res, next);
     });
 
+    //Get one
+    app.get('/service-order-byid/:serviceOrderId', function(req, res, next) {
+        serviceOrder.lookup(req, res, next);
+    });
+
+    //Update one
     app.put('/service-order/:id', function(req, res, next) {
        serviceOrder.update(req, res, next);
     });
-
 }

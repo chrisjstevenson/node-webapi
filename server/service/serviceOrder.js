@@ -34,7 +34,7 @@ function All(req, res, next) {
     });
 }
 
-function Single(req, res, next){
+function Single(req, res, next) {
 
     if(!req.params.id){
         res.send(500, 'id is required');
@@ -51,6 +51,22 @@ function Single(req, res, next){
     });
 }
 
+function Lookup(req, res, next) {
+
+    console.log(req.params.serviceOrderId)
+
+    dbServiceOrders().findOne({serviceOrderId:req.params.serviceOrderId}, function(e, result) {
+
+        if (e) return next(e);
+        if (result){
+            res.send(result);
+        }
+        else{
+            res.send(404, "Service Order not found.  Id: " + req.params.serviceOrderId);
+        }
+    });
+}
+
 
 function dbServiceOrders() {
     return db.collection('serviceOrders');
@@ -60,5 +76,6 @@ module.exports = {
     all: All,
     single: Single,
     add: Add,
-    update: Update
+    update: Update,
+    lookup: Lookup
 };
