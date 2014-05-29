@@ -1,4 +1,5 @@
 var db = require('../data/scorpionMongo').db;
+var BSON = require('mongoskin').BSONPure;
 
 function Add(req, res, next) {
 
@@ -52,17 +53,14 @@ function Single(req, res, next) {
 }
 
 function Lookup(req, res, next) {
-
-    console.log(req.params.serviceOrderId)
-
-    dbServiceOrders().findOne({serviceOrderId:req.params.serviceOrderId}, function(e, result) {
+    dbServiceOrders().findOne({serviceOrderId:parseInt(req.params.id)}, function(e, result) {
 
         if (e) return next(e);
-        if (result){
+        if (result) {
             res.send(result);
         }
-        else{
-            res.send(404, "Service Order not found.  Id: " + req.params.serviceOrderId);
+        else {
+            res.send(404, "Service Order not found.  Id: " + req.params.id);
         }
     });
 }

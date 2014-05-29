@@ -25,7 +25,7 @@ exports.init = function (app) {
     });
 
     //Get one
-    app.get('/service-order-byid/:serviceOrderId', function(req, res, next) {
+    app.get('/service-order-byid/:id', function(req, res, next) {
         serviceOrder.lookup(req, res, next);
     });
 
