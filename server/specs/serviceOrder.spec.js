@@ -48,7 +48,6 @@ describe('Scorpion Service Order API should', function() {
                serviceOrderId = res.body[0].serviceOrderId;
                done();
            })
-
     });
 
 
@@ -94,6 +93,4 @@ describe('Scorpion Service Order API should', function() {
                 done();
             })
     })
-
-
 })
