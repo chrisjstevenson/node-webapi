@@ -1,11 +1,19 @@
-var notImplementedEndpoint = require('./service/notImplementedEndpoint.js');
-var serviceOrder = require('./service/serviceOrder.js');
+var notImplementedEndpoint = require('./service/notImplementedEndpoint.js'),
+    serviceOrder = require('./service/serviceOrder.js'),
+    passport = require('passport'),
+    authentication = require('./authentication.js')
 
-exports.init = function (app) {
-    //app.param('id', /^\d+$/);
 
-    //Default
-    app.get('/', function(req, res) {
+var printConsoleMessage = function(message) {
+    return function(req, res, next) {
+        console.log(message);
+        next();
+    }};
+
+exports.init = function (app, authentication) {
+
+    app.get('/', function (req, res) {
+        console.log(req.user)
         res.send('welcome to scorpion');
     });
 
@@ -14,10 +22,15 @@ exports.init = function (app) {
         serviceOrder.add(req, res, next);
     });
 
+    app.get('/service-orders', printConsoleMessage('ROUTER api'),
+        authentication.ensureAuthenticated,
+        serviceOrder.all
+    )
+
     //Get all
-    app.get('/service-orders', function(req, res, next) {
-        serviceOrder.all(req, res, next);
-    });
+//    app.get('/service-orders', function(req, res, next) {
+//        serviceOrder.all(req, res, next);
+//    });
 
     //Get one
     app.get('/service-order/:id', function(req, res, next) {
