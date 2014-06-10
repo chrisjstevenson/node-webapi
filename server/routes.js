@@ -26,12 +26,6 @@ exports.init = function (app, authentication) {
         authentication.logout
     );
 
-    //Create
-    app.post('/service-order', printConsoleMessage('ROUTER api'),
-        authentication.ensureAuthenticated,
-        serviceOrder.add
-    );
-
     //Get all
     app.get('/service-orders', printConsoleMessage('ROUTER api'),
         authentication.ensureAuthenticated,
@@ -40,7 +34,7 @@ exports.init = function (app, authentication) {
 
     //Get one
     app.get('/service-order/:id', function(req, res, next) {
-       serviceOrder.single(req, res, next);
+        serviceOrder.single(req, res, next);
     });
 
     //Get one
@@ -48,8 +42,32 @@ exports.init = function (app, authentication) {
         serviceOrder.lookup(req, res, next);
     });
 
+
+    //API Endpoints
+
+
+    //Create
+    app.post('/api/service-order', printConsoleMessage('router: api'),
+        serviceOrder.add
+    );
+
+    //Get all
+    app.get('/api/service-orders', printConsoleMessage('router: api'),
+        serviceOrder.all
+    )
+
+    //Get one
+    app.get('/api/service-order/:id', function(req, res, next) {
+       serviceOrder.single(req, res, next);
+    });
+
+    //Get one
+    app.get('/api/service-order-byid/:id', function(req, res, next) {
+        serviceOrder.lookup(req, res, next);
+    });
+
     //Update one
-    app.put('/service-order/:id', function(req, res, next) {
+    app.put('/api/service-order/:id', function(req, res, next) {
        serviceOrder.update(req, res, next);
     });
 }

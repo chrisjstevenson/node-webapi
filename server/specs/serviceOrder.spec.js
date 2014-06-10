@@ -9,11 +9,7 @@ describe('Scorpion Service Order API should', function() {
 
     it('create a Service Order', function(done) {
 
-
-
-
-
-       superagent.post(baseUrl + '/service-order')
+       superagent.post(baseUrl + '/api/service-order')
            .send({
                "serviceOrderId": 308053941,
                "serialNumber": "bfb2ad63-8957-4e52-bdc4-147b863e945e",
@@ -56,7 +52,7 @@ describe('Scorpion Service Order API should', function() {
 
 
     it('retrieve a Service Order', function(done) {
-        superagent.get(baseUrl + '/service-order/' + id)
+        superagent.get(baseUrl + '/api/service-order/' + id)
             .end(function(error, res) {
                 expect(error).to.eql(null);
                 expect(typeof res.body).to.eql('object');
@@ -67,7 +63,7 @@ describe('Scorpion Service Order API should', function() {
 
 
     it('update a Service Order', function(done) {
-        superagent.put(baseUrl + '/service-order/' + id)
+        superagent.put(baseUrl + '/api/service-order/' + id)
             .send({"manufacturer": "UpdatedManufacturer"
             })
            .end(function(error, res) {
@@ -79,7 +75,7 @@ describe('Scorpion Service Order API should', function() {
 
 
     it('get all Service Orders', function(done) {
-        superagent.get(baseUrl + '/service-orders')
+        superagent.get(baseUrl + '/api/service-orders')
             .end(function(error, res) {
                 expect(error).to.eql(null);
                 expect(res.body.length).to.be.above(0);
@@ -88,7 +84,7 @@ describe('Scorpion Service Order API should', function() {
     });
 
     it('get Service Order by serviceOrderId', function(done) {
-        superagent.get(baseUrl + '/service-order-byid/' + serviceOrderId)
+        superagent.get(baseUrl + '/api/service-order-byid/' + serviceOrderId)
             .end(function(error, res) {
                 expect(error).to.eql(null);
                 expect(typeof res.body).to.eql('object');
