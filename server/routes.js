@@ -6,6 +6,8 @@ var notImplementedEndpoint = require('./service/notImplementedEndpoint.js'),
 
 var printConsoleMessage = function(message) {
     return function(req, res, next) {
+        console.log('authenticated: ' + req.isAuthenticated());
+        console.log('sessionData: ' + JSON.stringify(req.user, null, 4));
         console.log(message);
         next();
     }};
@@ -25,19 +27,16 @@ exports.init = function (app, authentication) {
     );
 
     //Create
-    app.post('/service-order', function(req, res, next) {
-        serviceOrder.add(req, res, next);
-    });
+    app.post('/service-order', printConsoleMessage('ROUTER api'),
+        authentication.ensureAuthenticated,
+        serviceOrder.add
+    );
 
+    //Get all
     app.get('/service-orders', printConsoleMessage('ROUTER api'),
         authentication.ensureAuthenticated,
         serviceOrder.all
     )
-
-    //Get all
-//    app.get('/service-orders', function(req, res, next) {
-//        serviceOrder.all(req, res, next);
-//    });
 
     //Get one
     app.get('/service-order/:id', function(req, res, next) {
