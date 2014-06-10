@@ -13,9 +13,16 @@ var printConsoleMessage = function(message) {
 exports.init = function (app, authentication) {
 
     app.get('/', function (req, res) {
-        console.log(req.user)
         res.send('welcome to scorpion');
     });
+
+    app.get('/login', printConsoleMessage("ROUTER login"),
+        authentication.login
+    );
+
+    app.get('/logout', printConsoleMessage("ROUTER logout"),
+        authentication.logout
+    );
 
     //Create
     app.post('/service-order', function(req, res, next) {

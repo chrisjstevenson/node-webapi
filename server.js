@@ -9,14 +9,14 @@ var passport = require('passport')
 
 app.use(bodyParser());
 app.use(express.static(__dirname + '/public'));
+app.use(connect.cookieParser());
+app.use(connect.session({ secret: 'funions!'}));
+
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(connect.cookieParser());
-app.use(connect.cookieSession({ secret: 'funions!', cookie: { maxAge: 60 * 60 * 1000 }}));
-
 passport.use(authentication.localStrategy)
-//passport.serializeUser(authentication.serializeUser());
-//passport.deserializeUser(authentication.deserializeUser());
+passport.serializeUser(authentication.serializeUser);
+passport.deserializeUser(authentication.deserializeUser);
 
 routes.init(app, authentication);
 
