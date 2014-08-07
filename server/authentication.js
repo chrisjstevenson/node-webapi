@@ -3,6 +3,50 @@
 var passport = require('passport'),
     localStrategy = require('passport-local').Strategy;
 
+var ActiveDirectory = require('activedirectory');
+var ad = new ActiveDirectory({
+    url: 'LDAP://na.bestbuy.com',
+    baseDN: 'dc=na,dc=bestbuy,dc=com',
+    username: 'XXXXXX@bestbuy.com',
+    password: 'XXXXXX' });
+
+//OU=Default,OU=Users,OU=Best Buy,OU=Users and Groups,DC=na,DC=bestbuy,DC=com
+
+
+//var sAMAccountName = 'XXXX';
+//var userPrincipalName = 'my.email@bestbuy.com';
+
+
+// Find user by a sAMAccountName
+//ad.findUser(sAMAccountName, function(err, user) {
+//    if (err) {
+//        console.log('ERROR: ' +JSON.stringify(err));
+//        return;
+//    }
+//
+//    if (! user) console.log('User: ' + sAMAccountName + ' not found.');
+//    else console.log(JSON.stringify(user));
+//});
+
+
+var username = 'XXXXXX0@bestbuy.com',
+    password = 'XXXXXX'
+
+ad.authenticate(username, password, function(err, auth) {
+    if (err) {
+        console.log('ERROR: '+JSON.stringify(err));
+        return;
+    }
+
+    if (auth) {
+        console.log('Authenticated!');
+    }
+    else {
+        console.log('Authentication failed!');
+    }
+});
+
+
 var Users = require('./users');
 
 console.log('test Users:\n', JSON.stringify(Users.testUsers, null, 4));
