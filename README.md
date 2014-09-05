@@ -1,4 +1,1 @@
-scorpion
-========
-
-it's a rest api... or whatever
+A place to try stuff out. 
